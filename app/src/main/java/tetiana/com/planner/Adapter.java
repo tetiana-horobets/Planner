@@ -13,12 +13,11 @@ class Adapter extends RecyclerView.Adapter<Adapter.RecipeViewHolder> {
 
     final private ListItemClickListener mOnClickListener;
 
-    private List<ShowRecipes> moviesList;
+    private List<DataRecipe> recipesList;
 
-    Adapter(List<ShowRecipes> moviesList, ListItemClickListener listener) {
-        this.moviesList = moviesList;
+    Adapter(List<DataRecipe> dataRecipes, ListItemClickListener listener) {
+        this.recipesList = dataRecipes;
         mOnClickListener = listener;
-
     }
 
     interface ListItemClickListener {
@@ -38,14 +37,17 @@ class Adapter extends RecyclerView.Adapter<Adapter.RecipeViewHolder> {
 
     @Override
     public void onBindViewHolder(RecipeViewHolder holder, int position) {
-        ShowRecipes recipes = moviesList.get(position);
+        DataRecipe recipes = recipesList.get(position);
         holder.title.setText(recipes.getTitle());
         holder.recipeType.setText(recipes.getRecipeType());
     }
 
     @Override
     public int getItemCount() {
-        return moviesList.size();
+        if (this.recipesList==null) {
+            return 0;
+        }
+        return this.recipesList.size();
     }
 
     class RecipeViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
