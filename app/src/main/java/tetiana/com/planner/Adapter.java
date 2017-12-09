@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
-class Adapter extends RecyclerView.Adapter<Adapter.NumberViewHolder> {
+class Adapter extends RecyclerView.Adapter<Adapter.RecipeViewHolder> {
 
     final private ListItemClickListener mOnClickListener;
 
@@ -26,18 +26,18 @@ class Adapter extends RecyclerView.Adapter<Adapter.NumberViewHolder> {
     }
 
     @Override
-    public NumberViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+    public RecipeViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         Context context = viewGroup.getContext();
         int layoutIdForListItem = R.layout.recipe_list_item;
         LayoutInflater inflater = LayoutInflater.from(context);
 
         View view = inflater.inflate(layoutIdForListItem, viewGroup, false);
 
-        return new NumberViewHolder(view);
+        return new RecipeViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(NumberViewHolder holder, int position) {
+    public void onBindViewHolder(RecipeViewHolder holder, int position) {
         ShowRecipes recipes = moviesList.get(position);
         holder.title.setText(recipes.getTitle());
         holder.recipeType.setText(recipes.getRecipeType());
@@ -48,10 +48,10 @@ class Adapter extends RecyclerView.Adapter<Adapter.NumberViewHolder> {
         return moviesList.size();
     }
 
-    class NumberViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    class RecipeViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView title, recipeType;
 
-        private NumberViewHolder(View view) {
+        private RecipeViewHolder(View view) {
             super(view);
             title = view.findViewById(R.id.titley);
             recipeType = view.findViewById(R.id.recipe);
