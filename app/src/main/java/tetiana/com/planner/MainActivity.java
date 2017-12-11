@@ -1,13 +1,21 @@
 package tetiana.com.planner;
 
-import android.content.Context;
-import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
-public class MainActivity extends AppCompatActivity implements Adapter.ListItemClickListener {
+import tetiana.com.planner.data.RecipeContract;
+import tetiana.com.planner.data.RecipeDbHelper;
+import tetiana.com.planner.data.RecipeTestData;
+
+public class MainActivity extends AppCompatActivity {
+
+    private SQLiteDatabase mDb;
+    private Adapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -15,23 +23,33 @@ public class MainActivity extends AppCompatActivity implements Adapter.ListItemC
         setContentView(R.layout.activity_main);
 
         RecyclerView mNumbersList = (RecyclerView) findViewById(R.id.rv_recipes);
-
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         mNumbersList.setLayoutManager(layoutManager);
 
-        mNumbersList.setHasFixedSize(true);
+        RecipeDbHelper dbHelper = new RecipeDbHelper(this);
+        mDb = dbHelper.getWritableDatabase();
 
-        Adapter mAdapter = new Adapter(DataRecipe.prepareRecipeData(), this);
+        RecipeTestData.insertFakeData(mDb);
+
+        Cursor cursor = getAllRecipes();
+        mAdapter = new Adapter(this, cursor);
+
         mNumbersList.setAdapter(mAdapter);
     }
 
-    @Override
-    public void onListItemClick(int clickedItemIndex) {
-        Context context = MainActivity.this;
-        Class destinationActivity = DetailsRecipeActivity.class;
-        Intent startDetailsRecipeActivityIntent = new Intent(context, destinationActivity);
-        startDetailsRecipeActivityIntent.putExtra("additional_text_key", DataRecipe.prepareRecipeData().get(clickedItemIndex).getIngredient().getIngredient());
-        startDetailsRecipeActivityIntent.putExtra("title_key", DataRecipe.prepareRecipeData().get(clickedItemIndex).getTitle());
-        startActivity(startDetailsRecipeActivityIntent);
+    public void addToWaitlist(View view) {
+
+    }
+
+    private Cursor getAllRecipes() {
+        return mDb.query(
+                RecipeContract.RecipeEntry.TABLE_NAME,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+        );
     }
 }
