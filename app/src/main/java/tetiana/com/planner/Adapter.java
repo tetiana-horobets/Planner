@@ -13,6 +13,7 @@ import tetiana.com.planner.data.RecipeContract;
 
 class Adapter extends RecyclerView.Adapter<Adapter.RecipeViewHolder> {
 
+
     private Cursor mCursor;
     private Context mContext;
 
@@ -32,10 +33,14 @@ class Adapter extends RecyclerView.Adapter<Adapter.RecipeViewHolder> {
     public void onBindViewHolder(RecipeViewHolder holder, int position) {
         if (!mCursor.moveToPosition(position))
             return;
-        String title = mCursor.getString(mCursor.getColumnIndex(RecipeContract.RecipeEntry.COLUMN_RECIPE_TITLE));
-        String type = mCursor.getString(mCursor.getColumnIndex(RecipeContract.RecipeEntry.COLUMN_RECIPE_TYPE));
+        String title = mCursor.getString(mCursor.getColumnIndex(RecipeContract.TitleAndTypeOfRecipe.COLUMN_RECIPE_TITLE));
+        String type = mCursor.getString(mCursor.getColumnIndex(RecipeContract.TitleAndTypeOfRecipe.COLUMN_RECIPE_TYPE));
+        String ingredient = mCursor.getString(mCursor.getColumnIndex(RecipeContract.RecipeIngredient.COLUMN_INGREDIENT_NAME));
+        String instraction = mCursor.getString(mCursor.getColumnIndex(RecipeContract.RecipeInstruction.COLUMN_RECIPE_INSTRUCTION));
         holder.titleTv.setText(title);
         holder.recipeType.setText((type));
+        holder.ingredientTV.setText(ingredient);
+        holder.instractionTV.setText(instraction);
     }
 
     @Override
@@ -44,12 +49,14 @@ class Adapter extends RecyclerView.Adapter<Adapter.RecipeViewHolder> {
     }
 
     class RecipeViewHolder extends RecyclerView.ViewHolder {
-        TextView titleTv, recipeType;
+        TextView titleTv, recipeType, instractionTV, ingredientTV ;
 
         private RecipeViewHolder(View view) {
             super(view);
             titleTv = view.findViewById(R.id.titley);
             recipeType = view.findViewById(R.id.recipe);
+            instractionTV = view.findViewById(R.id.instraction);
+            ingredientTV = view.findViewById(R.id.ingredient);
         }
 
     }

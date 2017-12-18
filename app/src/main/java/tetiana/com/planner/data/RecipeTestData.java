@@ -15,45 +15,40 @@ public class RecipeTestData {
             return;
         }
 
-        List<ContentValues> recipeDataList = new ArrayList<ContentValues>();
-
-        ContentValues cv = new ContentValues();
-        cv.put(RecipeContract.RecipeEntry.COLUMN_RECIPE_TITLE, "Berry and Yogurt Smoothie");
-        cv.put(RecipeContract.RecipeEntry.COLUMN_RECIPE_TYPE, "breakfast");
-        recipeDataList.add(cv);
-
-        cv = new ContentValues();
-        cv.put(RecipeContract.RecipeEntry.COLUMN_RECIPE_TITLE, "Sunny-Side Up Fried Eggs");
-        cv.put(RecipeContract.RecipeEntry.COLUMN_RECIPE_TYPE, "breakfast");
-        recipeDataList.add(cv);
-
-        cv = new ContentValues();
-        cv.put(RecipeContract.RecipeEntry.COLUMN_RECIPE_TITLE, "Chicken");
-        cv.put(RecipeContract.RecipeEntry.COLUMN_RECIPE_TYPE, "diner");
-        recipeDataList.add(cv);
-
-        cv = new ContentValues();
-        cv.put(RecipeContract.RecipeEntry.COLUMN_RECIPE_TITLE, "Sous");
-        cv.put(RecipeContract.RecipeEntry.COLUMN_RECIPE_TYPE, "sous");
-        recipeDataList.add(cv);
-
-        try
-        {
+        try {
             db.beginTransaction();
             //clear the table first
-            db.delete (RecipeContract.RecipeEntry.TABLE_NAME,null,null);
-            //go through the list and add one by one
-            for(ContentValues c:recipeDataList){
-                db.insert(RecipeContract.RecipeEntry.TABLE_NAME, null, c);
-            }
+            db.delete(RecipeContract.TitleAndTypeOfRecipe.TABLE_NAME, null, null);
+            db.delete(RecipeContract.RecipeIngredient.TABLE_NAME, null, null);
+            db.delete(RecipeContract.RecipeInstruction.TABLE_NAME, null, null);
+            db.delete(RecipeContract.RecipeLinked.TABLE_NAME, null, null);
+            
+            ContentValues titleAndTypeOfRecipeValues = new ContentValues();
+            titleAndTypeOfRecipeValues.put(RecipeContract.TitleAndTypeOfRecipe.COLUMN_RECIPE_TITLE, "Berry and Yogurt Smoothie");
+            titleAndTypeOfRecipeValues.put(RecipeContract.TitleAndTypeOfRecipe.COLUMN_RECIPE_TYPE, "Breakfast");
+            db.insert(RecipeContract.TitleAndTypeOfRecipe.TABLE_NAME, null, titleAndTypeOfRecipeValues);
+
+            ContentValues recipeIngredientValues = new ContentValues();
+            recipeIngredientValues.put(RecipeContract.RecipeIngredient.COLUMN_INGREDIENT_NAME, "Onion");
+            db.insert(RecipeContract.RecipeIngredient.TABLE_NAME, null, recipeIngredientValues);
+
+            ContentValues recipeInstructionValues = new ContentValues();
+            recipeInstructionValues.put(RecipeContract.RecipeInstruction.COLUMN_RECIPE_INSTRUCTION, "Smoothie instruction");
+            db.insert(RecipeContract.RecipeInstruction.TABLE_NAME, null, recipeInstructionValues);
+
+            ContentValues recipeLinkedValues = new ContentValues();
+            recipeLinkedValues.put(RecipeContract.RecipeLinked.COLUMN_ID_RECIPE, 1);
+            recipeLinkedValues.put(RecipeContract.RecipeLinked.COLUMN_ID_INSTRUCTION, 1);
+            recipeLinkedValues.put(RecipeContract.RecipeLinked.COLUMN_ID_INGREDIENT, 1);
+            db.insert(RecipeContract.RecipeLinked.TABLE_NAME, null, recipeLinkedValues);
+
             db.setTransactionSuccessful();
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             //too bad :(
-        }
-        finally
-        {
+        } finally {
             db.endTransaction();
         }
+
+
     }
 }
