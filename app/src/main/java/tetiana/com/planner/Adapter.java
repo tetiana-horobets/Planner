@@ -10,9 +10,7 @@ import android.widget.TextView;
 
 import tetiana.com.planner.data.RecipeContract;
 
-
 class Adapter extends RecyclerView.Adapter<Adapter.RecipeViewHolder> {
-
 
     private Cursor mCursor;
     private Context mContext;
@@ -35,7 +33,7 @@ class Adapter extends RecyclerView.Adapter<Adapter.RecipeViewHolder> {
             return;
         String title = mCursor.getString(mCursor.getColumnIndex(RecipeContract.TitleAndTypeOfRecipe.COLUMN_RECIPE_TITLE));
         String type = mCursor.getString(mCursor.getColumnIndex(RecipeContract.TitleAndTypeOfRecipe.COLUMN_RECIPE_TYPE));
-        String ingredient = mCursor.getString(mCursor.getColumnIndex(RecipeContract.RecipeIngredient.COLUMN_INGREDIENT_NAME));
+        String ingredient = mCursor.getString(mCursor.getColumnIndex(RecipeContract.Ingredient.COLUMN_INGREDIENT_NAME));
         String instraction = mCursor.getString(mCursor.getColumnIndex(RecipeContract.RecipeInstruction.COLUMN_RECIPE_INSTRUCTION));
         holder.titleTv.setText(title);
         holder.recipeType.setText((type));

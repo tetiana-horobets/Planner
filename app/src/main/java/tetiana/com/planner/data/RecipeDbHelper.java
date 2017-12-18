@@ -24,9 +24,9 @@ public class RecipeDbHelper extends SQLiteOpenHelper {
 
         sqLiteDatabase.execSQL(SQL_CREATE_RECIPE_TABLE);
 
-        final String SQL_CREATE_INGREDIENT_TABLE = "CREATE TABLE " + RecipeContract.RecipeIngredient.TABLE_NAME + " (" +
-                RecipeContract.RecipeIngredient._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
-                RecipeContract.RecipeIngredient.COLUMN_INGREDIENT_NAME + " TEXT NOT NULL " +
+        final String SQL_CREATE_INGREDIENT_TABLE = "CREATE TABLE " + RecipeContract.Ingredient.TABLE_NAME + " (" +
+                RecipeContract.Ingredient._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                RecipeContract.Ingredient.COLUMN_INGREDIENT_NAME + " TEXT NOT NULL " +
                 "); ";
 
         sqLiteDatabase.execSQL(SQL_CREATE_INGREDIENT_TABLE);
@@ -45,7 +45,7 @@ public class RecipeDbHelper extends SQLiteOpenHelper {
                 " FOREIGN KEY ("+RecipeContract.RecipeLinked.COLUMN_ID_RECIPE+") REFERENCES "+
                 RecipeContract.TitleAndTypeOfRecipe.TABLE_NAME+"("+RecipeContract.TitleAndTypeOfRecipe._ID+"), " +
                 " FOREIGN KEY ("+RecipeContract.RecipeLinked.COLUMN_ID_INGREDIENT+") REFERENCES "+
-                RecipeContract.RecipeIngredient.TABLE_NAME+"("+RecipeContract.RecipeIngredient._ID+"), " +
+                RecipeContract.Ingredient.TABLE_NAME+"("+RecipeContract.Ingredient._ID+"), " +
                 " FOREIGN KEY ("+RecipeContract.RecipeLinked.COLUMN_ID_INSTRUCTION+") REFERENCES "+
                 RecipeContract.RecipeInstruction.TABLE_NAME+"("+RecipeContract.RecipeInstruction._ID+"));";
 
@@ -55,7 +55,7 @@ public class RecipeDbHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + RecipeContract.TitleAndTypeOfRecipe.TABLE_NAME);
-        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + RecipeContract.RecipeIngredient.TABLE_NAME);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + RecipeContract.Ingredient.TABLE_NAME);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + RecipeContract.RecipeInstruction.TABLE_NAME);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + RecipeContract.RecipeLinked.TABLE_NAME);
         onCreate(sqLiteDatabase);

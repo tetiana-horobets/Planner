@@ -5,9 +5,6 @@ import android.content.ContentValues;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class RecipeTestData {
 
     public static void insertFakeData(SQLiteDatabase db) {
@@ -17,9 +14,8 @@ public class RecipeTestData {
 
         try {
             db.beginTransaction();
-            //clear the table first
             db.delete(RecipeContract.TitleAndTypeOfRecipe.TABLE_NAME, null, null);
-            db.delete(RecipeContract.RecipeIngredient.TABLE_NAME, null, null);
+            db.delete(RecipeContract.Ingredient.TABLE_NAME, null, null);
             db.delete(RecipeContract.RecipeInstruction.TABLE_NAME, null, null);
             db.delete(RecipeContract.RecipeLinked.TABLE_NAME, null, null);
             
@@ -29,8 +25,8 @@ public class RecipeTestData {
             db.insert(RecipeContract.TitleAndTypeOfRecipe.TABLE_NAME, null, titleAndTypeOfRecipeValues);
 
             ContentValues recipeIngredientValues = new ContentValues();
-            recipeIngredientValues.put(RecipeContract.RecipeIngredient.COLUMN_INGREDIENT_NAME, "Onion");
-            db.insert(RecipeContract.RecipeIngredient.TABLE_NAME, null, recipeIngredientValues);
+            recipeIngredientValues.put(RecipeContract.Ingredient.COLUMN_INGREDIENT_NAME, "Onion");
+            db.insert(RecipeContract.Ingredient.TABLE_NAME, null, recipeIngredientValues);
 
             ContentValues recipeInstructionValues = new ContentValues();
             recipeInstructionValues.put(RecipeContract.RecipeInstruction.COLUMN_RECIPE_INSTRUCTION, "Smoothie instruction");
@@ -44,11 +40,8 @@ public class RecipeTestData {
 
             db.setTransactionSuccessful();
         } catch (SQLException e) {
-            //too bad :(
         } finally {
             db.endTransaction();
         }
-
-
     }
 }
