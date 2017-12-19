@@ -12,12 +12,20 @@ import tetiana.com.planner.data.RecipeContract;
 
 class Adapter extends RecyclerView.Adapter<Adapter.RecipeViewHolder> {
 
+    final private ListItemClickListener mOnClickListener;
+
+
     private Cursor mCursor;
     private Context mContext;
 
-    Adapter(Context context, Cursor cursor) {
+    Adapter(Context context, Cursor cursor, ListItemClickListener listener) {
         this.mContext = context;
         this.mCursor = cursor;
+        this.mOnClickListener = listener;
+    }
+
+    interface ListItemClickListener {
+        void onListItemClick(int clickedPosition);
     }
 
     @Override
@@ -33,12 +41,8 @@ class Adapter extends RecyclerView.Adapter<Adapter.RecipeViewHolder> {
             return;
         String title = mCursor.getString(mCursor.getColumnIndex(RecipeContract.TitleAndTypeOfRecipe.COLUMN_RECIPE_TITLE));
         String type = mCursor.getString(mCursor.getColumnIndex(RecipeContract.TitleAndTypeOfRecipe.COLUMN_RECIPE_TYPE));
-        String ingredient = mCursor.getString(mCursor.getColumnIndex(RecipeContract.Ingredient.COLUMN_INGREDIENT_NAME));
-        String instraction = mCursor.getString(mCursor.getColumnIndex(RecipeContract.RecipeInstruction.COLUMN_RECIPE_INSTRUCTION));
         holder.titleTv.setText(title);
         holder.recipeType.setText((type));
-        holder.ingredientTV.setText(ingredient);
-        holder.instractionTV.setText(instraction);
     }
 
     @Override
@@ -46,16 +50,21 @@ class Adapter extends RecyclerView.Adapter<Adapter.RecipeViewHolder> {
         return mCursor.getCount();
     }
 
-    class RecipeViewHolder extends RecyclerView.ViewHolder {
-        TextView titleTv, recipeType, instractionTV, ingredientTV ;
+    class RecipeViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        TextView titleTv, recipeType;
 
         private RecipeViewHolder(View view) {
             super(view);
             titleTv = view.findViewById(R.id.titley);
             recipeType = view.findViewById(R.id.recipe);
-            instractionTV = view.findViewById(R.id.instraction);
-            ingredientTV = view.findViewById(R.id.ingredient);
+            itemView.setOnClickListener(this);
+
         }
 
+        @Override
+        public void onClick(View v) {
+            int clickedPosition = getAdapterPosition();
+            mOnClickListener.onListItemClick(clickedPosition);
+        }
     }
 }

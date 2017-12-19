@@ -1,5 +1,7 @@
 package tetiana.com.planner;
 
+import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
@@ -13,7 +15,9 @@ import tetiana.com.planner.data.RecipeDbHelper;
 import tetiana.com.planner.data.RecipeTestData;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements Adapter.ListItemClickListener {
+
+    Cursor cursor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,17 +43,27 @@ public class MainActivity extends AppCompatActivity {
                 " ON " + RecipeContract.RecipeLinked.COLUMN_ID_INSTRUCTION + " = " + RecipeContract.RecipeInstruction.TABLE_NAME + "." + RecipeContract.RecipeInstruction._ID +
                 " WHERE " + RecipeContract.RecipeLinked.COLUMN_ID_RECIPE + " = " +  1;
 
-        Cursor cursor = mDb.rawQuery(
+        cursor = mDb.rawQuery(
                 rawQuery,
                 null
         );
 
-        Adapter mAdapter = new Adapter(this, cursor);
+        Adapter mAdapter = new Adapter(this, cursor, this);
 
         mNumbersList.setAdapter(mAdapter);
     }
 
     public void addToWaitlist(View view) {
 
+    }
+
+    @Override
+    public void onListItemClick(int clickedItemIndex) {
+        Context context = MainActivity.this;
+        Class destinationActivity = DetailsRecipeActivity.class;
+        Intent startDetailsRecipeActivityIntent = new Intent(context, destinationActivity);
+        startDetailsRecipeActivityIntent.putExtra("additional_text_key", cursor.getString(cursor.getColumnIndex(RecipeContract.Ingredient.COLUMN_INGREDIENT_NAME)));
+        startDetailsRecipeActivityIntent.putExtra("title_key", cursor.getString(cursor.getColumnIndex(RecipeContract.RecipeInstruction.COLUMN_RECIPE_INSTRUCTION)));
+        startActivity(startDetailsRecipeActivityIntent);
     }
 }
