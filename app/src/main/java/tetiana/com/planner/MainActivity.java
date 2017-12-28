@@ -9,52 +9,42 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Button;
 
 import tetiana.com.planner.data.RecipeContract;
-import tetiana.com.planner.data.RecipeDbHelper;
 import tetiana.com.planner.data.RecipeTestData;
 
 
 public class MainActivity extends AppCompatActivity implements Adapter.ListItemClickListener {
 
+    Adapter mAdapter;
     Cursor cursor;
+    DataBase dataBase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
+        dataBase = new DataBase(this);
 
         RecyclerView mNumbersList = (RecyclerView) findViewById(R.id.rv_recipes);
+        Button saveNewRecipe = (Button) findViewById(R.id.add_new_recipe);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         mNumbersList.setLayoutManager(layoutManager);
-
-        RecipeDbHelper dbHelper = new RecipeDbHelper(this);
-        SQLiteDatabase mDb = dbHelper.getWritableDatabase();
-
-        RecipeTestData.insertFakeData(mDb);
-
-        String rawQuery = "SELECT * FROM " +
-                RecipeContract.RecipeLinked.TABLE_NAME +
-                " INNER JOIN " + RecipeContract.TitleAndTypeOfRecipe.TABLE_NAME +
-                " ON " + RecipeContract.RecipeLinked.COLUMN_ID_RECIPE + " = " + RecipeContract.TitleAndTypeOfRecipe.TABLE_NAME + "." + RecipeContract.TitleAndTypeOfRecipe._ID +
-                " INNER JOIN " + RecipeContract.Ingredient.TABLE_NAME +
-                " ON " + RecipeContract.RecipeLinked.COLUMN_ID_INGREDIENT + " = " + RecipeContract.Ingredient.TABLE_NAME + "." + RecipeContract.Ingredient._ID +
-                " INNER JOIN " + RecipeContract.RecipeInstruction.TABLE_NAME +
-                " ON " + RecipeContract.RecipeLinked.COLUMN_ID_INSTRUCTION + " = " + RecipeContract.RecipeInstruction.TABLE_NAME + "." + RecipeContract.RecipeInstruction._ID +
-                " WHERE " + RecipeContract.RecipeLinked.COLUMN_ID_RECIPE + " = " +  1;
-
-        cursor = mDb.rawQuery(
-                rawQuery,
-                null
-        );
-
-        Adapter mAdapter = new Adapter(this, cursor, this);
+        RecipeTestData.insertFakeData(dataBase.getmDb());
+        cursor = dataBase.getAllRecipes();
+        mAdapter = new Adapter(this, cursor, this);
 
         mNumbersList.setAdapter(mAdapter);
-    }
 
-    public void addToWaitlist(View view) {
-
+        saveNewRecipe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent startAddNewActivity = new Intent(MainActivity.this, AddNewRecipeActivity.class);
+                startActivity(startAddNewActivity);
+            }
+        });
     }
 
     @Override

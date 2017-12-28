@@ -10,6 +10,8 @@ import android.widget.TextView;
 
 import tetiana.com.planner.data.RecipeContract;
 
+import static android.support.v7.recyclerview.R.styleable.RecyclerView;
+
 class Adapter extends RecyclerView.Adapter<Adapter.RecipeViewHolder> {
 
     final private ListItemClickListener mOnClickListener;
@@ -33,6 +35,13 @@ class Adapter extends RecyclerView.Adapter<Adapter.RecipeViewHolder> {
         LayoutInflater inflater = LayoutInflater.from(mContext);
         View view = inflater.inflate(R.layout.recipe_list_item, viewGroup, false);
         return new RecipeViewHolder(view);
+    }
+
+    public void swapCursor(Cursor newCursor) {
+        if (mCursor != null) mCursor.close();
+        if (newCursor != null) {
+            this.notifyDataSetChanged();
+        }
     }
 
     @Override

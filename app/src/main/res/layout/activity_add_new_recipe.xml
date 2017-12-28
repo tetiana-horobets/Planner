@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.widget.RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="tetiana.com.planner.AddNewRecipeActivity">
+
+
+    <EditText
+        android:id="@+id/et_write_recipe_title"
+        android:layout_width="320dp"
+        android:layout_height="50dp"
+        android:text="add recipe title"/>
+
+    <EditText
+        android:id="@+id/et_write_recipe_type"
+        android:layout_width="320dp"
+        android:layout_height="50dp"
+        android:text="add recipe type"
+        android:layout_below="@id/et_write_recipe_title"/>
+
+    <EditText
+        android:id="@+id/et_write_recipe_ingredient"
+        android:layout_width="320dp"
+        android:layout_height="50dp"
+        android:text="add ingredient"
+        android:layout_below="@id/et_write_recipe_type"/>
+
+    <EditText
+        android:id="@+id/et_write_recipe_instruction"
+        android:layout_width="320dp"
+        android:layout_height="50dp"
+        android:text="add recipe instruction"
+        android:layout_below="@id/et_write_recipe_ingredient"/>
+
+    <Button
+        android:id="@+id/b_save_new_recipe"
+        android:layout_width="60dp"
+        android:layout_height="35dp"
+        android:text="save"
+        android:layout_below="@id/et_write_recipe_instruction"/>
+
+
+
+</android.widget.RelativeLayout>
